@@ -23,7 +23,7 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 plt.rcParams["font.family"] = "Times New Roman"
 ##############################################################################
 
-folder =r'C:\Users\orrbeer\Downloads'
+folder =r'Images'
 files = ["Sample 1_01", "Sample 2_03", "Sample 3_04", "Sample 4_02", "Sample 5_11"]
 plt.close()
 fig = plt.figure()#(figsize=(5, 8))
