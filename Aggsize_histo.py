@@ -26,10 +26,10 @@ plt.rcParams["font.family"] = "Times New Roman"
 folder =r'Images'
 files = ["Sample 1_01", "Sample 2_03", "Sample 3_04", "Sample 4_02", "Sample 5_11"]
 plt.close()
-fig = plt.figure()#(figsize=(5, 8))
+fig = plt.figure(figsize=(12.5, 3.5))
 
 it = 0
-for ff in files:
+for i, ff in enumerate(files):
     img1 = cv2.imread("{}\\{}.tif".format(folder, ff),0)
     ret,thresh_img = cv2.threshold(img1,120,255,cv2.THRESH_BINARY)
     thresh_img = scipy.ndimage.median_filter(thresh_img, size=3)
@@ -59,15 +59,17 @@ for ff in files:
     ### Main figure
     # print(img1.shape[0]*img1.shape[1]) #This is useful for debugging
     # print(max(histdata))               #This is useful for debugging
-    # grid = plt.GridSpec(8, 6)#, hspace=0.2, wspace=0.2)
-    # ax1 = fig.add_subplot(grid[:6,:6])#[:6,it*3:3+it*3])
-    # ax1.imshow(img1[50:1400,:], cmap='gray', aspect = 'equal')
-    # ax1.tick_params(labelbottom=False)
-    # plt.axis('off')
-    # scalebar =  ScaleBar(13.77e-3, 'um') # 1 pixel = 0.2 1/cm
-    # plt.gca().add_artist(scalebar)
-    # ax2 = fig.add_subplot(grid[6:,:6])#[6:,it*3:3+it*3])
-    ax2 = fig.add_subplot(2,3,it+1)
+    grid = plt.GridSpec(3, 2*len(files))#, hspace=0.2, wspace=0.2)
+    print(itt)
+    ax1 = fig.add_subplot(grid[0:2,i*2:i*2+2])#[:6,:6])#[:6,it*3:3+it*3])
+    # ax1 = fig.add_subplot(:6,it*3:3+it*3)
+    ax1.imshow(img1[50:1400,:], cmap='gray', aspect = 'equal')
+    ax1.tick_params(labelbottom=False)
+    plt.axis('off')
+    scalebar =  ScaleBar(13.77e-3, 'um') # 1 pixel = 0.2 1/cm
+    plt.gca().add_artist(scalebar)
+    ax2 = fig.add_subplot(grid[2,i*2:i*2+2])#[6:,:6])#[6:,it*3:3+it*3])
+    # ax2 = fig.add_subplot(2,3,it+1)
     hx_range = [3*190, 2e5]
     histrange=(hx_range[0], hx_range[1])
     kwargs = dict(range=histrange, histtype='stepfilled', alpha=0.8, bins=20)# 
@@ -75,15 +77,15 @@ for ff in files:
     # ax2.set_yscale('log')
     ax2.axis([hx_range[0], hx_range[1],1,330])#([5*182.615, 1050*182.615,1,1e3])
     ax2.set_xlabel("Aggregate size (nm$^2$)")
-    if it == 0:
+    if i == 0:
         ax2.set_ylabel("Counts")
-    # plt.yticks([1, 10, 100, 1e3])
+    else:
+        ax2.tick_params(labelleft=False) 
     
     plt.text(2e4,65,"Average = {0:.2e} \nVariance = {1:.2e}".format( np.average(histdata),np.var(histdata)))
-    plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+    # plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-    it+=1
-fig.subplots_adjust(hspace=0,bottom=0.35)
+fig.subplots_adjust(hspace=0,left=0.056,bottom=0.19,right=0.98,top=0.97,wspace=0.21)
 # plt.tight_layout()
 plt.show()
 # plt.savefig("C:\\Users\\orrbeer\\Pictures\\{}".format(files[0]))
